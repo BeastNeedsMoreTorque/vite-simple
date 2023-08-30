@@ -6,7 +6,7 @@ const calcStandings4 = (matchResults) => {
 
     matchResults.forEach(match => {
         const { homeTeam, awayTeam, homeScore, awayScore, homeCrest, awayCrest } = match;
-        let gamesPlayed = 0;
+        
         standings[homeTeam] = {
             ...standings[homeTeam],
             crest: homeCrest,
