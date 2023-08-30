@@ -21,8 +21,21 @@ const options = {
 };
 const BASE_URL = 'https://api.football-data.org/v4/';
 
+const Leagues = [
+    {"Bundesliga": '2002'},
+    {"EPL": '2021'},
+    {"Championship": '2016'},
+    {"League 1 (France)": '2015'},
+    {"Serie A": '2019'},
+    {"Holland": '2003'},
+    {"Portugal": '2017'},
+    {"Spain": '2014'},
+    {"Brazil": '2013'},
+]
+
 function App2() {
     const [matches, setMatches] = useState([]);
+    const [selectedLeague, setSelectedLeague] = useState('2021');
     const [selectedSeason, setSelectedSeason] = useState('2022');
     const [isLoading, setIsLoading] = useState(false);
 
@@ -33,7 +46,7 @@ function App2() {
             try {
                 //`${BASE_URL}competitions/${league_id}/matches?season=${year}`
                 const response = await axios.get(
-                    `${BASE_URL}competitions/2021/matches?season=${selectedSeason}`,
+                    `${BASE_URL}competitions/${selectedLeague}/matches?season=${selectedSeason}`,
                     // `${BASE_URL}matches?competitions=PL&status=FINISHED&dateFrom=2022-08-05&dateTo=2023-05-28`,
                     options
                 );
@@ -51,7 +64,11 @@ function App2() {
         };
 
         fetchMatches();
-    }, [selectedSeason]);
+    }, [selectedLeague, selectedSeason]);
+
+    const handleSelectedLeague = (event) => {
+        setSelectedLeague(event.target.value);
+    }
 
     function gameStatus(x) {
         return x === 'FINISHED';
@@ -99,6 +116,26 @@ function App2() {
                         <option value="2023">2023</option>
                     </select>
                 </label>
+            </div>
+            <div>
+                <select value={selectedLeague} onChange={handleSelectedLeague}>
+                    <option value="">Select a League</option>
+                    {/* {Object.keys(Leagues).map((key, value) => (
+                        <option key={key} value={value}>
+                            {Leagues[key]}
+                        </option>
+                    ))} */}
+                    {/* {Leagues.map((league) => <option key={league.key} value={league.value}></option>)} */}
+                    {Leagues.map((option, index) => {
+                        const label = Object.keys(option)[0]; // Assuming each object has only one key
+                        const value = option[label];
+                        return (
+                            <option key={index} value={value}>
+                                {label}
+                            </option>
+                        );
+                    })}
+                </select>
             </div>
             <div>
                 <h1 className='text-3xl text-center font-bold'>Standings</h1>
