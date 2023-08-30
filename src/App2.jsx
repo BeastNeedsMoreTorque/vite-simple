@@ -86,18 +86,23 @@ function App2() {
     // Step 4: Render standings using React.js
     return (
         <div className="App2">
-            <label className='label'>
-                Season:
-                <select className='select select-sm w-full max-w-xs' name="selectedSeason"
-                    value={selectedSeason}
-                    onChange={(e) => setSelectedSeason(e.target.value)}
-                >
-                    <option value="2020">2020</option>
-                    <option value="2021">2021</option>
-                    <option value="2022">2022</option>
-                </select>
-            </label>
-            <h1 className=''>Standings</h1>
+            <div>
+                <label className='label text-xl w-1/3'>
+                    Season:
+                    <select className='select select-lg w-1/2 max-w-xs' name="selectedSeason"
+                        value={selectedSeason}
+                        onChange={(e) => setSelectedSeason(e.target.value)}
+                    >
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                    </select>
+                </label>
+            </div>
+            <div>
+                <h1 className='text-3xl text-center font-bold'>Standings</h1>
+            </div>
             {isLoading ? (
                 <h1>Loading...</h1>
             ) : (
@@ -108,6 +113,7 @@ function App2() {
                                 <th>Pos</th>
                                 <th>Crest</th>
                                 <th>Team</th>
+                                <th>GP</th>
                                 <th>GF</th>
                                 <th>GA</th>
                                 <th>GD</th>
@@ -120,6 +126,7 @@ function App2() {
                                     <td>{index + 1}</td>
                                     <td className='w-1 rounded-full'><img src={teamData.crest} alt='team-crest' /></td>
                                     <td>{teamData.team}</td>
+                                    <td>{teamData.gp}</td>
                                     <td>{teamData.goalsScored}</td>
                                     <td>{teamData.goalsConceded}</td>
                                     <td>{teamData.goalsScored - teamData.goalsConceded}</td>

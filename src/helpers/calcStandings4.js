@@ -6,10 +6,11 @@ const calcStandings4 = (matchResults) => {
 
     matchResults.forEach(match => {
         const { homeTeam, awayTeam, homeScore, awayScore, homeCrest, awayCrest } = match;
-
+        let gamesPlayed = 0;
         standings[homeTeam] = {
             ...standings[homeTeam],
             crest: homeCrest,
+            gp: (standings[homeTeam]?.gamesPlayed || 0) + (gamesPlayed += 1),
             goalsScored: (standings[homeTeam]?.goalsScored || 0) + homeScore,
             goalsConceded: (standings[homeTeam]?.goalsConceded || 0) + awayScore,
             points: (standings[homeTeam]?.points || 0) + (homeScore > awayScore ? 3 : homeScore === awayScore ? 1 : 0),
@@ -18,6 +19,7 @@ const calcStandings4 = (matchResults) => {
         standings[awayTeam] = {
             ...standings[awayTeam],
             crest: awayCrest,
+            gp: (standings[awayTeam]?.gamesPlayed || 0) + (gamesPlayed += 1),
             goalsScored: (standings[awayTeam]?.goalsScored || 0) + awayScore,
             goalsConceded: (standings[awayTeam]?.goalsConceded || 0) + homeScore,
             points: (standings[awayTeam]?.points || 0) + (awayScore > homeScore ? 3 : awayScore === homeScore ? 1 : 0),
