@@ -118,7 +118,10 @@ function App2() {
                 </label>
             </div>
             <div>
-                <select value={selectedLeague} onChange={handleSelectedLeague}>
+                <select 
+                   value={selectedLeague} 
+                   onChange={handleSelectedLeague}
+                >
                     <option value="">Select a League</option>
                     {/* {Object.keys(Leagues).map((key, value) => (
                         <option key={key} value={value}>
