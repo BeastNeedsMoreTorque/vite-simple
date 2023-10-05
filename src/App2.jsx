@@ -118,7 +118,9 @@ function App2() {
                 </label>
             </div>
             <div>
-                <select 
+                <label className='label text-xl w-1/3'>
+                    League:
+                <select className='select select-lg w-1/2 max-w-xs' name='selectedLeague'
                    value={selectedLeague} 
                    onChange={handleSelectedLeague}
                 >
@@ -139,6 +141,7 @@ function App2() {
                         );
                     })}
                 </select>
+                </label>
             </div>
             <div>
                 <h1 className='text-3xl text-center font-bold'>Standings</h1>
