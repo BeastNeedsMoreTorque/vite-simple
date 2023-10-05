@@ -25,12 +25,12 @@ const Leagues = [
 ]
 
 function App3() {
-    // const {season} = useParams;
-    // const {league} = useParams;
     const [matches, setMatches] = useState([]);
     const [selectedLeague, setSelectedLeague] = useState('2021');
     const [selectedSeason, setSelectedSeason] = useState('2022');
     const [isLoading, setIsLoading] = useState(false);
+    const {season} = useParams;
+    const {league} = useParams;
 
     useEffect(() => {
         setIsLoading(true)
