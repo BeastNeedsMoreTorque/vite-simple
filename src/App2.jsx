@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import { Loader } from './helpers/Loader';
 
 import axios from 'axios';
 import pimps from './data/pimps_long.json';
@@ -147,7 +148,8 @@ function App2() {
                 <h1 className='text-3xl text-center font-bold'>Standings</h1>
             </div>
             {isLoading ? (
-                <h1>Loading...</h1>
+                // <h1>Loading...</h1>
+                <Loader />
             ) : (
                 <div className='overflow-x-auto'>
                     <table className='table'>
