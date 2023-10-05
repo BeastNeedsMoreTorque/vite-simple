@@ -152,7 +152,7 @@ function App2() {
                 <Loader />
             ) : (
                 <section className='overflow-x-auto'>
-                    <table className='table'>
+                    <table className='table table-zebra'>
                         <thead>
                             <tr>
                                 <th>Pos</th>
