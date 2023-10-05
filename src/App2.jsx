@@ -23,15 +23,15 @@ const options = {
 const BASE_URL = 'https://api.football-data.org/v4/';
 
 const Leagues = [
-    {"Bundesliga": '2002'},
-    {"EPL": '2021'},
-    {"Championship": '2016'},
-    {"League 1 (France)": '2015'},
-    {"Serie A": '2019'},
-    {"Holland": '2003'},
-    {"Portugal": '2017'},
-    {"Spain": '2014'},
-    {"Brazil": '2013'},
+    { "Bundesliga": '2002' },
+    { "EPL": '2021' },
+    { "Championship": '2016' },
+    { "League 1 (France)": '2015' },
+    { "Serie A": '2019' },
+    { "Holland": '2003' },
+    { "Portugal": '2017' },
+    { "Spain": '2014' },
+    { "Brazil": '2013' },
 ]
 
 function App2() {
@@ -103,8 +103,8 @@ function App2() {
 
     // Step 4: Render standings using React.js
     return (
-        <div className="App2">
-            <div>
+        <article className="App2">
+            <section>
                 <label className='label text-xl w-1/3'>
                     Season:
                     <select className='select select-lg w-1/2 max-w-xs' name="selectedSeason"
@@ -117,41 +117,41 @@ function App2() {
                         <option value="2023">2023</option>
                     </select>
                 </label>
-            </div>
-            <div>
+            </section>
+            <section>
                 <label className='label text-xl w-1/3'>
                     League:
-                <select className='select select-lg w-1/2 max-w-xs' name='selectedLeague'
-                   value={selectedLeague} 
-                   onChange={handleSelectedLeague}
-                >
-                    <option value="">Select a League</option>
-                    {/* {Object.keys(Leagues).map((key, value) => (
+                    <select className='select select-lg w-1/2 max-w-xs' name='selectedLeague'
+                        value={selectedLeague}
+                        onChange={handleSelectedLeague}
+                    >
+                        <option value="">Select a League</option>
+                        {/* {Object.keys(Leagues).map((key, value) => (
                         <option key={key} value={value}>
                             {Leagues[key]}
                         </option>
                     ))} */}
-                    {/* {Leagues.map((league) => <option key={league.key} value={league.value}></option>)} */}
-                    {Leagues.map((option, index) => {
-                        const label = Object.keys(option)[0]; // Assuming each object has only one key
-                        const value = option[label];
-                        return (
-                            <option key={index} value={value}>
-                                {label}
-                            </option>
-                        );
-                    })}
-                </select>
+                        {/* {Leagues.map((league) => <option key={league.key} value={league.value}></option>)} */}
+                        {Leagues.map((option, index) => {
+                            const label = Object.keys(option)[0]; // Assuming each object has only one key
+                            const value = option[label];
+                            return (
+                                <option key={index} value={value}>
+                                    {label}
+                                </option>
+                            );
+                        })}
+                    </select>
                 </label>
-            </div>
-            <div>
+            </section>
+            <section>
                 <h1 className='text-3xl text-center font-bold'>Standings</h1>
-            </div>
+            </section>
             {isLoading ? (
                 // <h1>Loading...</h1>
                 <Loader />
             ) : (
-                <div className='overflow-x-auto'>
+                <section className='overflow-x-auto'>
                     <table className='table'>
                         <thead>
                             <tr>
@@ -181,9 +181,9 @@ function App2() {
                         </tbody>
                     </table>
                     <p>The season you selected is: {selectedSeason}</p>
-                </div>
+                </section>
             )}
-        </div>
+        </article>
     )
 }
 
