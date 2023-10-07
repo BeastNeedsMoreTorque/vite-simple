@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router';
+import { getMatches } from './api/config';
 import './App.css';
-import { Loader } from './helpers/Loader';
 
-import axios from 'axios';
 import pimps from './data/pimps_long.json';
 // import StandingsTable from './StandingsTable';
 
@@ -11,34 +11,26 @@ import calcStandings2 from './helpers/calcStandings2';
 import calcStandings3 from './helpers/calcStandings3';
 import calcStandings4 from './helpers/calcStandings4';
 
-const apiKey = import.meta.env.VITE_FOOTBALL_API_KEY;
-
-const options = {
-    method: 'GET',
-    headers: {
-        'X-Auth-Token': apiKey,
-        //'Accept-Encoding': '',
-    },
-};
-const BASE_URL = 'https://api.football-data.org/v4/';
 
 const Leagues = [
-    { "Bundesliga": '2002' },
-    { "EPL": '2021' },
-    { "Championship": '2016' },
-    { "League 1 (France)": '2015' },
-    { "Serie A": '2019' },
-    { "Holland": '2003' },
-    { "Portugal": '2017' },
-    { "Spain": '2014' },
-    { "Brazil": '2013' },
+    {"Bundesliga": '2002'},
+    {"EPL": '2021'},
+    {"Championship": '2016'},
+    {"League 1 (France)": '2015'},
+    {"Serie A": '2019'},
+    {"Holland": '2003'},
+    {"Portugal": '2017'},
+    {"Spain": '2014'},
+    {"Brazil": '2013'},
 ]
 
-function App2() {
+function App3() {
     const [matches, setMatches] = useState([]);
     const [selectedLeague, setSelectedLeague] = useState('2021');
     const [selectedSeason, setSelectedSeason] = useState('2022');
     const [isLoading, setIsLoading] = useState(false);
+    const {season} = useParams;
+    const {league} = useParams;
 
     useEffect(() => {
         setIsLoading(true)
@@ -46,11 +38,7 @@ function App2() {
         const fetchMatches = async () => {
             try {
                 //`${BASE_URL}competitions/${league_id}/matches?season=${year}`
-                const response = await axios.get(
-                    `${BASE_URL}competitions/${selectedLeague}/matches?season=${selectedSeason}`,
-                    // `${BASE_URL}matches?competitions=PL&status=FINISHED&dateFrom=2022-08-05&dateTo=2023-05-28`,
-                    options
-                );
+                const response = await getMatches(selectedSeason, selectedLeague)
                 const results = response.data.matches.filter(
                     (p) =>
                         !pimps.includes(p.homeTeam.name) && !pimps.includes(p.awayTeam.name)
@@ -103,8 +91,8 @@ function App2() {
 
     // Step 4: Render standings using React.js
     return (
-        <article className="App2">
-            <section>
+        <div className="App3">
+            <div>
                 <label className='label text-xl w-1/3'>
                     Season:
                     <select className='select select-lg w-1/2 max-w-xs' name="selectedSeason"
@@ -117,42 +105,41 @@ function App2() {
                         <option value="2023">2023</option>
                     </select>
                 </label>
-            </section>
-            <section>
+            </div>
+            <div>
                 <label className='label text-xl w-1/3'>
                     League:
-                    <select className='select select-lg w-1/2 max-w-xs' name='selectedLeague'
-                        value={selectedLeague}
-                        onChange={handleSelectedLeague}
-                    >
-                        <option value="">Select a League</option>
-                        {/* {Object.keys(Leagues).map((key, value) => (
+                <select className='select select-lg w-1/2 max-w-xs' name='selectedLeague'
+                   value={selectedLeague} 
+                   onChange={handleSelectedLeague}
+                >
+                    <option value="">Select a League</option>
+                    {/* {Object.keys(Leagues).map((key, value) => (
                         <option key={key} value={value}>
                             {Leagues[key]}
                         </option>
                     ))} */}
-                        {/* {Leagues.map((league) => <option key={league.key} value={league.value}></option>)} */}
-                        {Leagues.map((option, index) => {
-                            const label = Object.keys(option)[0]; // Assuming each object has only one key
-                            const value = option[label];
-                            return (
-                                <option key={index} value={value}>
-                                    {label}
-                                </option>
-                            );
-                        })}
-                    </select>
+                    {/* {Leagues.map((league) => <option key={league.key} value={league.value}></option>)} */}
+                    {Leagues.map((option, index) => {
+                        const label = Object.keys(option)[0]; // Assuming each object has only one key
+                        const value = option[label];
+                        return (
+                            <option key={index} value={value}>
+                                {label}
+                            </option>
+                        );
+                    })}
+                </select>
                 </label>
-            </section>
-            <section>
+            </div>
+            <div>
                 <h1 className='text-3xl text-center font-bold'>Standings</h1>
-            </section>
+            </div>
             {isLoading ? (
-                // <h1>Loading...</h1>
-                <Loader />
+                <h1>Loading...</h1>
             ) : (
-                <section className='overflow-x-auto'>
-                    <table className='table table-zebra'>
+                <div className='overflow-x-auto'>
+                    <table className='table'>
                         <thead>
                             <tr>
                                 <th>Pos</th>
@@ -181,10 +168,10 @@ function App2() {
                         </tbody>
                     </table>
                     <p>The season you selected is: {selectedSeason}</p>
-                </section>
+                </div>
             )}
-        </article>
+        </div>
     )
 }
 
-export default App2;
+export default App3;
