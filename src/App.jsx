@@ -28,16 +28,16 @@ function App() {
       try {
         //`${BASE_URL}competitions/${league_id}/matches?season=${year}`
         const response = await axios.get(
-          `${BASE_URL}competitions/2021/matches?season=2021`,
-          // `${BASE_URL}matches?competitions=PL&status=FINISHED&dateFrom=2022-08-05&dateTo=2023-05-28`,
+          // `${BASE_URL}competitions/2021/matches?season=2021`,
+          `${BASE_URL}matches?competitions=PL&status=FINISHED&dateFrom=2022-08-05&dateTo=2023-05-28`,
           options
         );
         const results = response.data.matches.filter(
           (p) =>
             !pimps.includes(p.homeTeam.name) && !pimps.includes(p.awayTeam.name)
         );
-        // setMatches(results);
-        setMatches(response.data.matches);
+        setMatches(results);
+        // setMatches(response.data.matches);
         console.log(results /*response.data.matches*/);
         setIsLoading(false)
       } catch (error) {
@@ -51,9 +51,10 @@ function App() {
   const matchesResults = matches;
 
   return (
-    <div className="App"> 
-      <App2 />
-    </div>
+    <section className="App"> 
+      {/* <App2 /> */}
+      <h1 className='flex-auto px-4 py-4'>Match Results</h1>
+    </section>
   )
 }
 
