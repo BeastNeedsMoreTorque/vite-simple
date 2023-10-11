@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { getMatches } from './api/config';
 import './App.css';
@@ -6,9 +6,9 @@ import './App.css';
 import pimps from './data/pimps_long.json';
 // import StandingsTable from './StandingsTable';
 
-import calcStandings from './helpers/calcStandings';
-import calcStandings2 from './helpers/calcStandings2';
-import calcStandings3 from './helpers/calcStandings3';
+// import calcStandings from './helpers/calcStandings';
+// import calcStandings2 from './helpers/calcStandings2';
+// import calcStandings3 from './helpers/calcStandings3';
 import calcStandings4 from './helpers/calcStandings4';
 
 
@@ -29,8 +29,8 @@ function App3() {
     const [selectedLeague, setSelectedLeague] = useState('2021');
     const [selectedSeason, setSelectedSeason] = useState('2022');
     const [isLoading, setIsLoading] = useState(false);
-    const {season} = useParams;
-    const {league} = useParams;
+    // const {season} = useParams;
+    // const {league} = useParams;
 
     useEffect(() => {
         setIsLoading(true)

@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 
 import axios from "axios";
 import pimps from "./data/pimps_long.json";
 // import StandingsTable from './StandingsTable';
-import App2 from "./App2";
 
 const apiKey = import.meta.env.VITE_FOOTBALL_API_KEY;
 
@@ -29,7 +28,8 @@ function App() {
         //`${BASE_URL}competitions/${league_id}/matches?season=${year}`
         const response = await axios.get(
           // `${BASE_URL}competitions/2021/matches?season=2021`,
-          `${BASE_URL}matches?competitions=PL&status=FINISHED&dateFrom=2022-08-05&dateTo=2023-05-28`,
+          // `${BASE_URL}matches?competitions=PL&status=FINISHED&dateFrom=2022-08-05&dateTo=2023-05-28`,
+          `${BASE_URL}competitions/PL/matches`,//?matchday=11
           options
         );
         const results = response.data.matches.filter(
@@ -38,7 +38,7 @@ function App() {
         );
         setMatches(results);
         // setMatches(response.data.matches);
-        console.log(results /*response.data.matches*/);
+        console.log("App results: ", results /*response.data.matches*/);
         setIsLoading(false);
       } catch (error) {
         console.error(error);
