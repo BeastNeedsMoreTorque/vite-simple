@@ -1,28 +1,28 @@
-import React, { useState, useEffect } from'react';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import "./App.css";
 
-import axios from 'axios';
-import pimps from './data/pimps_long.json';
+import axios from "axios";
+import pimps from "./data/pimps_long.json";
 // import StandingsTable from './StandingsTable';
-import App2 from './App2';
+import App2 from "./App2";
 
 const apiKey = import.meta.env.VITE_FOOTBALL_API_KEY;
 
 const options = {
-  method: 'GET',
+  method: "GET",
   headers: {
-    'X-Auth-Token': apiKey,
+    "X-Auth-Token": apiKey,
     //'Accept-Encoding': '',
   },
 };
-const BASE_URL = 'https://api.football-data.org/v4/';
+const BASE_URL = "https://api.football-data.org/v4/";
 
 function App() {
   const [matches, setMatches] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     // Fetch matches from the API
     const fetchMatches = async () => {
       try {
@@ -39,7 +39,7 @@ function App() {
         setMatches(results);
         // setMatches(response.data.matches);
         console.log(results /*response.data.matches*/);
-        setIsLoading(false)
+        setIsLoading(false);
       } catch (error) {
         console.error(error);
       }
@@ -51,11 +51,11 @@ function App() {
   const matchesResults = matches;
 
   return (
-    <section className="App"> 
+    <section className="App">
       {/* <App2 /> */}
-      <h1 className='flex-auto px-4 py-4'>Match Results</h1>
+      <h1 className="flex-auto px-4 py-4">Match Results</h1>
     </section>
-  )
+  );
 }
 
 export default App;
