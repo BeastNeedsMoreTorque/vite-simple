@@ -1,0 +1,25 @@
+Sure, I can help you with that. Here is a brief explanation of what the javascript code does:
+
+- The code defines a function named `calcStandings4` that takes an array of match results as a parameter. 
+Each match result is an object that contains the following properties: `homeTeam`, `awayTeam`, 
+`homeScore`, `awayScore`, `homeCrest`, and `awayCrest`.
+- The function initializes an empty object called `standings` that will store the statistics of each team 
+based on the match results.
+- The function loops through each match result using the `forEach` method and destructures the properties 
+of each match object into variables.
+- The function uses the `_.cond` function from the [lodash](^1^) library to determine the result of the match 
+for each team. The `_.cond` function takes an array of pairs of predicates and functions, and returns a function 
+that applies the first function whose predicate returns true for the given arguments. For example, if the 
+home score is greater than the away score, the home result will be 'w' and the away result will be 'l'.
+- The function updates the `standings` object with the statistics of each team, such as crest, games played, 
+goals scored, goals conceded, points, and form. The function uses the spread operator (`...`) to copy the 
+existing properties of each team in the `standings` object, and then updates or adds new properties using 
+the match data. The function also uses optional chaining (`?.`) and nullish coalescing (`||`) to handle cases 
+where a team does not have any existing properties in the `standings` object. For example, if a team does not 
+have a `gp` property, it will default to 0 and then add 1.
+- The function creates an array of team objects from the `standings` object using the `Object.keys` and `map` 
+methods. Each team object contains the team name and its statistics.
+- The function sorts the array of team objects by points in descending order using the `sort` method. If two 
+teams have the same points, it will compare their goal difference (goals scored minus goals conceded). If two 
+teams have the same goal difference, it will keep their original order.
+- The function returns the sorted array of team objects as the final result.
