@@ -38,7 +38,7 @@ function App() {
         );
         setMatches(results);
         // setMatches(response.data.matches);
-        console.log("App results: ", results /*response.data.matches*/);
+        // console.log("App results: ", results /*response.data.matches*/);
         setIsLoading(false);
       } catch (error) {
         console.error(error);

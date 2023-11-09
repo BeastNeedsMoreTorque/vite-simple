@@ -98,8 +98,9 @@ function App2() {
         homeScore: m.score.fullTime.home,
       })
     );
+    
 
-  console.log(matches);
+  console.log("awayTeam: ", matchResults);
 
   const sortedStandings = calcStandings4(matchResults);
 
