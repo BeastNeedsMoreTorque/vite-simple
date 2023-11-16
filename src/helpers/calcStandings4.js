@@ -71,6 +71,15 @@ const calcStandings4 = (matchResults) => {
       [_.stubTrue, _.constant("d")], // otherwise, return 'd'
     ])(homeScore, awayScore); // apply the function to homeScore and awayScore
 
+    // OR es6 vanilla, but you need to call homeResult(homeScore, awayScore) in the form section
+    /**
+    const homeResult = (homeScore, awayScore) =>
+      homeScore > awayScore ? "w" : homeScore < awayScore ? "l" : "d";
+
+    const awayResult = (homeScore, awayScore) =>
+      homeScore > awayScore ? "l" : homeScore < awayScore ? "w" : "d";
+    */
+    
     standings[homeTeam] = {
       ...standings[homeTeam],
       crest: homeCrest,
