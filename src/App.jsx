@@ -29,12 +29,13 @@ function App() {
         const response = await axios.get(
           // `${BASE_URL}competitions/2021/matches?season=2021`,
           // `${BASE_URL}matches?competitions=PL&status=FINISHED&dateFrom=2022-08-05&dateTo=2023-05-28`,
-          `${BASE_URL}competitions/PL/matches`,//?matchday=11
-          options
+          `${BASE_URL}competitions/PL/matches`, //?matchday=11
+          options,
         );
         const results = response.data.matches.filter(
           (p) =>
-            !pimps.includes(p.homeTeam.name) && !pimps.includes(p.awayTeam.name)
+            !pimps.includes(p.homeTeam.name) &&
+            !pimps.includes(p.awayTeam.name),
         );
         setMatches(results);
         // setMatches(response.data.matches);

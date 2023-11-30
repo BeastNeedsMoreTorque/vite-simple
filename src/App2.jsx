@@ -1,45 +1,47 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from "react";
-import _ from "lodash";
-import "./App.css";
-import { Loader } from "./helpers/Loader";
+import React, { useEffect, useState } from 'react';
+import _ from 'lodash';
 
-import axios from "axios";
-import pimps from "./data/pimps_long.json";
+import './App.css';
+
+import axios from 'axios';
+
+import pimps from './data/pimps_long.json';
 // import StandingsTable from './StandingsTable';
 
-import calcStandings from "./helpers/calcStandings";
-import calcStandings2 from "./helpers/calcStandings2";
-import calcStandings3 from "./helpers/calcStandings3";
-import calcStandings4 from "./helpers/calcStandings4";
+import calcStandings from './helpers/calcStandings';
+import calcStandings2 from './helpers/calcStandings2';
+import calcStandings3 from './helpers/calcStandings3';
+import calcStandings4 from './helpers/calcStandings4';
+import { Loader } from './helpers/Loader';
 
 const apiKey = import.meta.env.VITE_FOOTBALL_API_KEY;
 
 const options = {
-  method: "GET",
+  method: 'GET',
   headers: {
-    "X-Auth-Token": apiKey,
+    'X-Auth-Token': apiKey,
     //'Accept-Encoding': '',
   },
 };
-const BASE_URL = "https://api.football-data.org/v4/";
+const BASE_URL = 'https://api.football-data.org/v4/';
 
 const Leagues = [
-  { Bundesliga: "2002" },
-  { EPL: "2021" },
-  { Championship: "2016" },
-  { "League 1 (France)": "2015" },
-  { "Serie A": "2019" },
-  { Holland: "2003" },
-  { Portugal: "2017" },
-  { Spain: "2014" },
-  { Brazil: "2013" },
+  { Bundesliga: '2002' },
+  { EPL: '2021' },
+  { Championship: '2016' },
+  { 'League 1 (France)': '2015' },
+  { 'Serie A': '2019' },
+  { Holland: '2003' },
+  { Portugal: '2017' },
+  { Spain: '2014' },
+  { Brazil: '2013' },
 ];
 
 function App2() {
   const [matches, setMatches] = useState([]);
-  const [selectedLeague, setSelectedLeague] = useState("2021");
-  const [selectedSeason, setSelectedSeason] = useState("2022");
+  const [selectedLeague, setSelectedLeague] = useState('2021');
+  const [selectedSeason, setSelectedSeason] = useState('2022');
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -51,11 +53,10 @@ function App2() {
         const response = await axios.get(
           `${BASE_URL}competitions/${selectedLeague}/matches?season=${selectedSeason}`,
           // `${BASE_URL}matches?competitions=PL&status=FINISHED&dateFrom=2022-08-05&dateTo=2023-05-28`,
-          options
+          options,
         );
         const results = response.data.matches.filter(
-          (p) =>
-            !pimps.includes(p.homeTeam.name) && !pimps.includes(p.awayTeam.name)
+          (p) => !pimps.includes(p.homeTeam.name) && !pimps.includes(p.awayTeam.name),
         );
         setMatches(results);
         // setMatches(response.data.matches);
@@ -74,7 +75,7 @@ function App2() {
   };
 
   function gameStatus(x) {
-    return x === "FINISHED";
+    return x === 'FINISHED';
   }
 
   const matchResults = matches
@@ -96,11 +97,10 @@ function App2() {
         //time: time,
         awayScore: m.score.fullTime.away,
         homeScore: m.score.fullTime.home,
-      })
+      }),
     );
-    
 
-  console.log("awayTeam: ", matchResults);
+  console.log('awayTeam: ', matchResults);
 
   const sortedStandings = calcStandings4(matchResults);
 
@@ -108,7 +108,7 @@ function App2() {
   return (
     <article className="App2">
       <section>
-        <label className="label text-xl w-1/3">
+        <label className="label w-1/3 text-xl">
           Season:
           <select
             className="select select-lg w-1/2 max-w-xs"
@@ -124,7 +124,7 @@ function App2() {
         </label>
       </section>
       <section>
-        <label className="label text-xl w-1/3">
+        <label className="label w-1/3 text-xl">
           League:
           <select
             className="select select-lg w-1/2 max-w-xs"
@@ -152,7 +152,7 @@ function App2() {
         </label>
       </section>
       <section>
-        <h1 className="text-3xl text-center font-bold">Standings</h1>
+        <h1 className="text-center text-3xl font-bold">Standings</h1>
       </section>
       {isLoading ? (
         // <h1>Loading...</h1>
@@ -181,22 +181,16 @@ function App2() {
                     <img src={teamData.crest} alt="team-crest" />
                   </td>
                   {index + 1 === 1 ? (
-                  <td className='p-1 text-left font-bold text-green-400'>
-                    {teamData.team}
-                  </td>
-                ) : index + 1 === 12 || index + 1 === 13 || index + 1 === 14 ? (
-                  <td className='p-1 text-left font-semibold text-red-300'>
-                    {teamData.team}
-                  </td>
-                ) : teamData.team === 'West Ham United FC' ? (
-                  <td className='p-1 text-left text-xl font-extrabold text-burgundy'>
-                    {teamData.team}
-                  </td>
-                ) : (
-                  <td className='p-1 text-left'>
-                    {teamData.team}
-                  </td>
-                )}
+                    <td className="p-1 text-left font-bold text-green-400">{teamData.team}</td>
+                  ) : index + 1 === 12 || index + 1 === 13 || index + 1 === 14 ? (
+                    <td className="p-1 text-left font-semibold text-red-300">{teamData.team}</td>
+                  ) : teamData.team === 'West Ham United FC' ? (
+                    <td className="text-burgundy p-1 text-left text-xl font-extrabold">
+                      {teamData.team}
+                    </td>
+                  ) : (
+                    <td className="p-1 text-left">{teamData.team}</td>
+                  )}
                   <td>{teamData.gp}</td>
                   <td>{teamData.goalsScored}</td>
                   <td>{teamData.goalsConceded}</td>
@@ -204,14 +198,14 @@ function App2() {
                   <td>{teamData.points}</td>
                   <td className="hidden p-1 text-center md:table-cell">
                     <div className="flex">
-                      {_.takeRight(teamData.form, 5).map((f,i) =>
-                        f === "w" ? (
+                      {_.takeRight(teamData.form, 5).map((f, i) =>
+                        f === 'w' ? (
                           <div key={i} className="mx-0.5 mb-2 h-3 w-1 rounded bg-green-500"></div>
-                        ) : f === "l" ? (
+                        ) : f === 'l' ? (
                           <div key={i} className="mx-0.5 mt-2 h-3 w-1 rounded bg-red-500"></div>
                         ) : (
                           <div key={i} className="mx-0.5 mb-1 h-1 w-1 rounded bg-gray-400"></div>
-                        )
+                        ),
                       )}
                     </div>
                   </td>
