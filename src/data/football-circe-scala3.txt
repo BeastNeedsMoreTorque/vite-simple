@@ -1,0 +1,136 @@
+Here's how you can parse the JSON response using Circe in Scala 3:
+
+```scala
+import io.circe._
+import io.circe.generic.auto._
+import io.circe.parser._
+
+case class Area(id: Int, name: String, code: String, flag: String)
+case class Competition(id: Int, name: String, code: String, competitionType: String, emblem: String)
+case class Season(id: Int, startDate: String, endDate: String, currentMatchday: Int, winner: Option[String])
+case class Match(
+  area: Area,
+  competition: Competition,
+  season: Season,
+  id: Int,
+  utcDate: String,
+  status: String,
+  matchday: Int,
+  stage: String,
+  group: Option[String],
+  lastUpdated: String,
+  homeTeam: Team,
+  awayTeam: Team,
+  score: Score,
+  odds: Odds,
+  referees: List[Referee]
+)
+case class Team(id: Int, name: String, shortName: String, tla: String, crest: String)
+case class Score(winner: String, duration: String, fullTime: FullTime, halfTime: FullTime)
+case class FullTime(home: Int, away: Int)
+case class Odds(msg: String)
+case class Referee(id: Int, name: String, refereeType: String, nationality: String)
+
+object Main {
+  def main(args: Array[String]): Unit = {
+    val json = """
+      {
+        "filters": {
+          "season": 2023
+        },
+        "resultSet": {
+          "count": 380,
+          "first": "2023-08-11",
+          "last": "2024-05-19",
+          "played": 380
+        },
+        "competition": {
+          "id": 2021,
+          "name": "Premier League",
+          "code": "PL",
+          "type": "LEAGUE",
+          "emblem": "https://crests.football-data.org/PL.png"
+        },
+        "matches": [
+          {
+            "area": {
+              "id": 2072,
+              "name": "England",
+              "code": "ENG",
+              "flag": "https://crests.football-data.org/770.svg"
+            },
+            "competition": {
+              "id": 2021,
+              "name": "Premier League",
+              "code": "PL",
+              "type": "LEAGUE",
+              "emblem": "https://crests.football-data.org/PL.png"
+            },
+            "season": {
+              "id": 1564,
+              "startDate": "2023-08-11",
+              "endDate": "2024-05-19",
+              "currentMatchday": 38,
+              "winner": null
+            },
+            "id": 435943,
+            "utcDate": "2023-08-11T19:00:00Z",
+            "status": "FINISHED",
+            "matchday": 1,
+            "stage": "REGULAR_SEASON",
+            "group": null,
+            "lastUpdated": "2024-06-02T20:20:54Z",
+            "homeTeam": {
+              "id": 328,
+              "name": "Burnley FC",
+              "shortName": "Burnley",
+              "tla": "BUR",
+              "crest": "https://crests.football-data.org/328.png"
+            },
+            "awayTeam": {
+              "id": 65,
+              "name": "Manchester City FC",
+              "shortName": "Man City",
+              "tla": "MCI",
+              "crest": "https://crests.football-data.org/65.png"
+            },
+            "score": {
+              "winner": "AWAY_TEAM",
+              "duration": "REGULAR",
+              "fullTime": {
+                "home": 0,
+                "away": 3
+              },
+              "halfTime": {
+                "home": 0,
+                "away": 2
+              }
+            },
+            "odds": {
+              "msg": "Activate Odds-Package in User-Panel to retrieve odds."
+            },
+            "referees": [
+              {
+                "id": 11585,
+                "name": "Craig Pawson",
+                "type": "REFEREE",
+                "nationality": "England"
+              }
+            ]
+          }
+        ]
+      }
+    """.stripMargin
+
+    val jsonResult = Json.parse(json) //val jsonResult = Json.parse[JSON]
+
+    val matches = jsonResult.hcursor.downField("matches").as[List[Json]].flatMap(json => json.as[List[Match]])
+
+    matches.foreach(println)
+  }
+}
+```
+
+In this code, we define the case classes for the JSON fields. Then we parse the JSON string using `json.parse[Json]`. 
+We use `hcursor` to navigate the JSON object and get the list of matches. We then use `as[List[Match]]` to convert the 
+JSON list to a Scala list of `Match` objects. Finally, we print each match.

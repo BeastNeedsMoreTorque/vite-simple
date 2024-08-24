@@ -1,0 +1,86 @@
+Here is the equivalent Scala 3 code using `foldLeft` and functional programming style:
+
+```scala
+import scala.collection.mutable
+
+def calcStandings(matchResults: List[MatchResult]): List[Standing] = {
+  val standings = mutable.Map.empty[String, Standing]
+
+  matchResults.foldLeft(standings) { (acc, matchResult) =>
+    val (homeTeam, awayTeam, homeScore, awayScore, homeCrest, awayCrest) = matchResult
+
+    acc.update(homeTeam, Standing(
+      crest = homeCrest,
+      gp = acc.getOrElse(homeTeam, Standing()).gp + 1,
+      goalsScored = acc.getOrElse(homeTeam, Standing()).goalsScored + homeScore,
+      goalsConceded = acc.getOrElse(homeTeam, Standing()).goalsConceded + awayScore,
+      points = acc.getOrElse(homeTeam, Standing()).points + (if (homeScore > awayScore) 3 else if (homeScore == awayScore) 1 else 0)
+    ))
+
+    acc.update(awayTeam, Standing(
+      crest = awayCrest,
+      gp = acc.getOrElse(awayTeam, Standing()).gp + 1,
+      goalsScored = acc.getOrElse(awayTeam, Standing()).goalsScored + awayScore,
+      goalsConceded = acc.getOrElse(awayTeam, Standing()).goalsConceded + homeScore,
+      points = acc.getOrElse(awayTeam, Standing()).points + (if (awayScore > homeScore) 3 else if (awayScore == homeScore) 1 else 0)
+    ))
+
+    acc
+  }
+
+  standings.values.toList.sortWith((a, b) => b.points compare a.points || b.goalsScored - b.goalsConceded compare a.goalsScored - a.goalsConceded)
+}
+
+case class Standing(crest: String, gp: Int, goalsScored: Int, goalsConceded: Int, points: Int)
+case class MatchResult(homeTeam: String, awayTeam: String, homeScore: Int, awayScore: Int, homeCrest: String, awayCrest: String)
+```
+
+In this code, `foldLeft` is used to accumulate the standings for each team. The initial value of the accumulator is an empty map. For each match result, 
+the standings for the home and away teams are updated and the accumulator is returned. The final standings are then sorted and returned as a list.
+
+#########******************Using an immutable collection********************************###############
+Yes, it is possible to use an immutable collection instead of a mutable collection. Here's how you can do it:
+
+```scala
+import scala.collection.immutable.HashMap
+import scala.collection.immutable.ListMap
+
+def calcStandings(matchResults: List[MatchResult]): List[Standing] = {
+  val initialStandings = HashMap.empty[String, Standing]
+
+  matchResults.foldLeft(initialStandings) { (acc, matchResult) =>
+    val (homeTeam, awayTeam, homeScore, awayScore, homeCrest, awayCrest) = matchResult
+
+    val newHomeStanding = Standing(
+      crest = homeCrest,
+      gp = acc.getOrElse(homeTeam, Standing(crest = "", gp = 0)).gp + 1,
+      goalsScored = acc.getOrElse(homeTeam, Standing(crest = "", gp = 0)).goalsScored + homeScore,
+      goalsConceded = acc.getOrElse(homeTeam, Standing(crest = "", gp = 0)).goalsConceded + awayScore,
+      points = acc.getOrElse(homeTeam, Standing(crest = "", gp = 0)).points + (if (homeScore > awayScore) 3 else if (homeScore == awayScore) 1 else 0)
+    )
+
+    val newAwayStanding = Standing(
+      crest = awayCrest,
+      gp = acc.getOrElse(awayTeam, Standing(crest = "", gp = 0)).gp + 1,
+      goalsScored = acc.getOrElse(awayTeam, Standing(crest = "", gp = 0)).goalsScored + awayScore,
+      goalsConceded = acc.getOrElse(awayTeam, Standing(crest = "", gp = 0)).goalsConceded + homeScore,
+      points = acc.getOrElse(awayTeam, Standing(crest = "", gp = 0)).points + (if (awayScore > homeScore) 3 else if (awayScore == homeScore) 1 else 0)
+    )
+
+    val newAcc = acc + (homeTeam -> newHomeStanding) + (awayTeam -> newAwayStanding)
+
+    newAcc
+  }
+
+  val sortedStandings = ListMap.from(newAcc.toSeq.sortWith((a, b) => b._2.points compare a._2.points || b._2.goalsScored - b._2.goalsConceded compare a._2.goalsScored - a._2.goalsConceded).toSeq).map(_._2)
+
+  sortedStandings
+}
+
+case class Standing(crest: String, gp: Int, goalsScored: Int, goalsConceded: Int, points: Int)
+case class MatchResult(homeTeam: String, awayTeam: String, homeScore: Int, awayScore: Int, homeCrest: String, awayCrest: String)
+```
+
+In this code, `HashMap` is used as the initial immutable map. The `foldLeft` operation still accumulates the standings for each team, 
+but now it returns a new map for each iteration instead of updating the same map. The final map is then converted to a list of standings 
+using `ListMap.from` and `map`.
