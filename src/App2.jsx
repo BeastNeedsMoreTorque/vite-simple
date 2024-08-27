@@ -80,24 +80,26 @@ function App2() {
 
   const matchResults = matches
     .filter((r) => gameStatus(r.status))
-    .map((m) =>
-      //let dataDayCommon = m.utcDate.split('T');
-      //let dataDay = dataDayCommon[0].split('-').reverse().join('-');
-      //let time = dataDayCommon[1].slice(0, -4);
+    .map((m) => 
+      // let dataDayCommon = m.utcDate.split('T');
+      // let dataDay = dataDayCommon[0].split('-').reverse().join('-');
+      // let time = dataDayCommon[1].slice(0, -4);
       ({
         //   d: m.id,
         //   name: m.stage,
+        // date: m.utcDate,
         awayTeam: m.awayTeam.name,
         homeTeam: m.homeTeam.name,
         awayCrest: m.awayTeam.crest,
         homeCrest: m.homeTeam.crest,
         //   status: m.status,
         //   outcome: m.score.winner,
-        //dataDay: dataDay,
+        // dataDay: dataDay,
         //time: time,
         awayScore: m.score.fullTime.away,
         homeScore: m.score.fullTime.home,
       }),
+    
     );
 
   console.log('awayTeam: ', matchResults);
@@ -123,6 +125,7 @@ function App2() {
             <option value="2021">2021</option>
             <option value="2022">2022</option>
             <option value="2023">2023</option>
+            <option value="2024">2024</option>
           </select>
         </label>
       </section>
@@ -161,6 +164,7 @@ function App2() {
         // <h1>Loading...</h1>
         <Loader />
       ) : (
+        <section>
         <section className="overflow-x-auto">
           <table className="table table-zebra">
             <thead>
@@ -225,6 +229,31 @@ function App2() {
           </table>
           <p>The season you selected is: {selectedSeason}</p>
         </section>
+        <section>
+          <table>
+            <thead>
+             <tr>
+              <th>Date</th>
+              <th>Home</th>
+              <th>hscore</th>
+              <th>ascore</th>
+              <th>Away</th>
+             </tr>
+            </thead>
+            <tbody>
+             {matchResults.map((match, index) => (
+              <tr key={index}>
+                <td>{match.dataDay}</td>
+                <td>{match.homeTeam}</td>
+                <td>{match.homeScore}</td>
+                <td>{match.awayScore}</td>
+                <td>{match.awayTeam}</td>
+              </tr>
+            ))}
+            </tbody>
+          </table>
+        </section>
+      </section>
       )}
     </article>
   );
