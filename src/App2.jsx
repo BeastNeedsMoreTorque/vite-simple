@@ -197,14 +197,18 @@ function App2() {
               </tr>
             </thead>
             <tbody>
-              {sortedStandings.map((teamData, index) => (
+              {sortedStandings.map((teamData, index) => {//(
                 // NOTE: to use curly braces i need to use function syntax instead of arrow function syntax:
                 //{sortedStandings.map(function(teamData, index) {
                   //...
+                //})} OR
+                //{sortedStandings.map((teamData, index) => {
+                  //return (....)
                 //})}
                 // const lastIndex2 = teamData.at(-1) !== undefined ? teamData.lastIndexOf(teamData.at(-1)) : -1;
-                // const lastIndex = (teamData.length > 0 ? teamData.lastIndexOf(teamData[teamData.length - 1]) : -1) + 1;  
+                const lastIndex = (teamData.length > 0 ? teamData.lastIndexOf(teamData[teamData.length - 1]) : -1) + 1;  
                 // const lastIndex3 = sortedStandings.map((x, index) => index).reduce((a, b) => b, sortedStandings.length - 1);
+                return (
                 <tr className="hover" key={index}>
                   <td>{index + 1}</td>
                   <td className="w-1 rounded-full">
@@ -240,7 +244,10 @@ function App2() {
                     </div>
                   </td>
                 </tr>
-             ))}
+              )
+             //)
+                    }
+            )}
             </tbody>
           </table>
           <p>The season you selected is: {selectedSeason}</p>
