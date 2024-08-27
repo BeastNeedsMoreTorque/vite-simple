@@ -83,21 +83,24 @@ function App2() {
     const gmtDate = utcDate.toLocaleString('en-GB', { timeZone: 'GMT' });
     const dataDayCommon = gmtDate.split(',');
     const dataDay = dataDayCommon[0].split('/').join('-');
-    return dataDay//gmtDate;
+    const time = dataDayCommon[1].slice(1, -3);
+    return { dataDay, time }//gmtDate;
   }
 
   const matchResults = matches
     .filter((r) => gameStatus(r.status))
-    .map((m) => //{
+    .map((m) => {
       // const utcDate = new Date(m.utcDate); // UTC date string
       // const gmtDate = utcDate.toLocaleString('en-US', { timeZone: 'GMT' });
       // let dataDayCommon = m.utcDate.split('T');
       // let dataDay = dataDayCommon[0].split('-').reverse().join('-');
       // let time = dataDayCommon[1].slice(0, -4);
-      ({
+      const {dataDay, time} = changeDate(m.utcDate);
+      //(
+        return {
         //   d: m.id,
         //   name: m.stage,
-        date: changeDate(m.utcDate),
+        date: dataDay,//changeDate(m.utcDate),
         awayTeam: m.awayTeam.name,
         homeTeam: m.homeTeam.name,
         awayCrest: m.awayTeam.crest,
@@ -105,10 +108,12 @@ function App2() {
         //   status: m.status,
         //   outcome: m.score.winner,
         // dataDay: dataDay,
-        //time: time,
+        time: time,
         awayScore: m.score.fullTime.away,
         homeScore: m.score.fullTime.home,
-      })//}
+      }
+     //)
+     }
       ,
     
     );
@@ -245,6 +250,7 @@ function App2() {
             <thead>
              <tr>
               <th>Date</th>
+              <th>Time</th>
               <th className='text-right'>Home</th>
               <th></th>
               <th></th>
@@ -255,6 +261,7 @@ function App2() {
              {matchResults.map((match, index) => (
               <tr key={index}>
                 <td>{match.date}</td>
+                <td>{match.time}</td>
                 <td className='p1 text-right'>{match.homeTeam}</td>
                 <td>{match.homeScore}</td>
                 <td>{match.awayScore}</td>
