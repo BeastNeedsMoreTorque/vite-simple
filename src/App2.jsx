@@ -103,6 +103,9 @@ function App2() {
   console.log('awayTeam: ', matchResults);
 
   const sortedStandings = calcStandings4(matchResults);
+  const lastIndex3 = (sortedStandings.map((x, index) => index).reduce((a, b) => b, sortedStandings.length - 1)) + 1;
+  console.log('lastIndex3: ', lastIndex3);
+  
 
   // Step 4: Render standings using React.js
   return (
@@ -175,6 +178,13 @@ function App2() {
             </thead>
             <tbody>
               {sortedStandings.map((teamData, index) => (
+                // NOTE: to use curly braces i need to use function syntax instead of arrow function syntax:
+                //{sortedStandings.map(function(teamData, index) {
+                  //...
+                //})}
+                // const lastIndex2 = teamData.at(-1) !== undefined ? teamData.lastIndexOf(teamData.at(-1)) : -1;
+                // const lastIndex = (teamData.length > 0 ? teamData.lastIndexOf(teamData[teamData.length - 1]) : -1) + 1;  
+                // const lastIndex3 = sortedStandings.map((x, index) => index).reduce((a, b) => b, sortedStandings.length - 1);
                 <tr className="hover" key={index}>
                   <td>{index + 1}</td>
                   <td className="w-1 rounded-full">
@@ -182,8 +192,8 @@ function App2() {
                   </td>
                   {index + 1 === 1 ? (
                     <td className="p-1 text-left font-bold text-green-400">{teamData.team}</td>
-                  ) : index + 1 === 12 || index + 1 === 13 || index + 1 === 14 ? (
-                    <td className="p-1 text-left font-semibold text-red-300">{teamData.team}</td>
+                  ) : index + 1 === lastIndex3 - 2 || index + 1 === lastIndex3 - 1 || index + 1 === lastIndex3 ? (
+                    <td className="p-1 text-left font-semibold text-red-600">{teamData.team}</td>
                   ) : teamData.team === 'West Ham United FC' ? (
                     <td className="text-burgundy p-1 text-left text-xl font-extrabold">
                       {teamData.team}
@@ -210,7 +220,7 @@ function App2() {
                     </div>
                   </td>
                 </tr>
-              ))}
+             ))}
             </tbody>
           </table>
           <p>The season you selected is: {selectedSeason}</p>
