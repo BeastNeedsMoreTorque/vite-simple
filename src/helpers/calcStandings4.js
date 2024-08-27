@@ -42,7 +42,7 @@ const calcStandings4 = (matchResults) => {
   const standings = {};
 
   matchResults.forEach((match) => {
-    const { homeTeam, awayTeam, homeScore, awayScore, homeCrest, awayCrest } =
+    const { date, homeTeam, awayTeam, homeScore, awayScore, homeCrest, awayCrest } =
       match;
 
     // determine the result of the match for each team
