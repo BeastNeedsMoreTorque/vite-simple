@@ -6,6 +6,7 @@ import './App.css';
 
 import axios from 'axios';
 
+import Results from './api/components/Results';
 import pimps from './data/pimps_long.json';
 // import StandingsTable from './StandingsTable';
 
@@ -14,7 +15,6 @@ import calcStandings2 from './helpers/calcStandings2';
 import calcStandings3 from './helpers/calcStandings3';
 import calcStandings4 from './helpers/calcStandings4';
 import { Loader } from './helpers/Loader';
-import Results from './api/components/Results';
 
 const apiKey = import.meta.env.VITE_FOOTBALL_API_KEY;
 

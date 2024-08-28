@@ -42,8 +42,7 @@ const calcStandings4 = (matchResults) => {
   const standings = {};
 
   matchResults.forEach((match) => {
-    const { date, time, homeTeam, awayTeam, homeScore, awayScore, homeCrest, awayCrest } =
-      match;
+    const { date, time, homeTeam, awayTeam, homeScore, awayScore, homeCrest, awayCrest } = match;
 
     // determine the result of the match for each team
     // let homeResult, awayResult;
@@ -60,15 +59,15 @@ const calcStandings4 = (matchResults) => {
 
     // determine the result of the match for each team (using lodash)
     const homeResult = _.cond([
-      [_.gt, _.constant("w")], // if homeScore > awayScore, return 'w'
-      [_.lt, _.constant("l")], // if homeScore < awayScore, return 'l'
-      [_.stubTrue, _.constant("d")], // otherwise, return 'd'
+      [_.gt, _.constant('w')], // if homeScore > awayScore, return 'w'
+      [_.lt, _.constant('l')], // if homeScore < awayScore, return 'l'
+      [_.stubTrue, _.constant('d')], // otherwise, return 'd'
     ])(homeScore, awayScore); // apply the function to homeScore and awayScore
 
     const awayResult = _.cond([
-      [_.gt, _.constant("l")], // if homeScore > awayScore, return 'l'
-      [_.lt, _.constant("w")], // if homeScore < awayScore, return 'w'
-      [_.stubTrue, _.constant("d")], // otherwise, return 'd'
+      [_.gt, _.constant('l')], // if homeScore > awayScore, return 'l'
+      [_.lt, _.constant('w')], // if homeScore < awayScore, return 'w'
+      [_.stubTrue, _.constant('d')], // otherwise, return 'd'
     ])(homeScore, awayScore); // apply the function to homeScore and awayScore
 
     // OR es6 vanilla, but you need to call homeResult(homeScore, awayScore) in the form section
@@ -79,7 +78,7 @@ const calcStandings4 = (matchResults) => {
     const awayResult = (homeScore, awayScore) =>
       homeScore > awayScore ? "l" : homeScore < awayScore ? "w" : "d";
     */
-    
+
     standings[homeTeam] = {
       ...standings[homeTeam],
       crest: homeCrest,
@@ -90,7 +89,7 @@ const calcStandings4 = (matchResults) => {
         (standings[homeTeam]?.points || 0) +
         (homeScore > awayScore ? 3 : homeScore === awayScore ? 1 : 0),
       // append the result to the form attribute or create a new one if it does not exist
-      form: (standings[homeTeam]?.form || "") + homeResult,
+      form: (standings[homeTeam]?.form || '') + homeResult,
     };
 
     standings[awayTeam] = {
@@ -103,7 +102,7 @@ const calcStandings4 = (matchResults) => {
         (standings[awayTeam]?.points || 0) +
         (awayScore > homeScore ? 3 : awayScore === homeScore ? 1 : 0),
       // append the result to the form attribute or create a new one if it does not exist
-      form: (standings[awayTeam]?.form || "") + awayResult,
+      form: (standings[awayTeam]?.form || '') + awayResult,
     };
   });
 
@@ -111,8 +110,7 @@ const calcStandings4 = (matchResults) => {
     .map((team) => ({ team, ...standings[team] }))
     .sort(
       (a, b) =>
-        b.points - a.points ||
-        b.goalsScored - b.goalsConceded - (a.goalsScored - a.goalsConceded)
+        b.points - a.points || b.goalsScored - b.goalsConceded - (a.goalsScored - a.goalsConceded),
     );
 
   return sortedStandings;
