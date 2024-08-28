@@ -84,7 +84,7 @@ function App2() {
     const dataDayCommon = gmtDate.split(',');
     const dataDay = dataDayCommon[0].split('/').join('-');
     const time = dataDayCommon[1].slice(1, -3);
-    return { dataDay, time }//gmtDate;
+    return { dataDay, time }; //gmtDate;
   }
 
   const matchResults = matches
@@ -95,12 +95,12 @@ function App2() {
       // let dataDayCommon = m.utcDate.split('T');
       // let dataDay = dataDayCommon[0].split('-').reverse().join('-');
       // let time = dataDayCommon[1].slice(0, -4);
-      const {dataDay, time} = changeDate(m.utcDate);
+      const { dataDay, time } = changeDate(m.utcDate);
       //(
-        return {
+      return {
         //   d: m.id,
         //   name: m.stage,
-        date: dataDay,//changeDate(m.utcDate),
+        date: dataDay, //changeDate(m.utcDate),
         awayTeam: m.awayTeam.name,
         homeTeam: m.homeTeam.name,
         awayCrest: m.awayTeam.crest,
@@ -111,19 +111,16 @@ function App2() {
         time: time,
         awayScore: m.score.fullTime.away,
         homeScore: m.score.fullTime.home,
-      }
-     //)
-     }
-      ,
-    
-    );
+      };
+      //)
+    });
 
   console.log('awayTeam: ', matchResults);
 
   const sortedStandings = calcStandings4(matchResults);
-  const lastIndex3 = (sortedStandings.map((x, index) => index).reduce((a, b) => b, sortedStandings.length - 1)) + 1;
+  const lastIndex3 =
+    sortedStandings.map((x, index) => index).reduce((a, b) => b, sortedStandings.length - 1) + 1;
   console.log('lastIndex3: ', lastIndex3);
-  
 
   // Step 4: Render standings using React.js
   return (
@@ -181,104 +178,117 @@ function App2() {
         <Loader />
       ) : (
         <section>
-        <section className="overflow-x-auto">
-          <table className="table table-zebra">
-            <thead>
-              <tr>
-                <th>Pos</th>
-                <th>Crest</th>
-                <th>Team</th>
-                <th>GP</th>
-                <th>GF</th>
-                <th>GA</th>
-                <th>GD</th>
-                <th>Pts</th>
-                <th>Form</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sortedStandings.map((teamData, index) => {//(
-                // NOTE: to use curly braces i need to use function syntax instead of arrow function syntax:
-                //{sortedStandings.map(function(teamData, index) {
-                  //...
-                //})} OR
-                //{sortedStandings.map((teamData, index) => {
-                  //return (....)
-                //})}
-                // const lastIndex2 = teamData.at(-1) !== undefined ? teamData.lastIndexOf(teamData.at(-1)) : -1;
-                const lastIndex = (teamData.length > 0 ? teamData.lastIndexOf(teamData[teamData.length - 1]) : -1) + 1;  
-                // const lastIndex3 = sortedStandings.map((x, index) => index).reduce((a, b) => b, sortedStandings.length - 1);
-                return (
-                <tr className="hover" key={index}>
-                  <td>{index + 1}</td>
-                  <td className="w-1 rounded-full">
-                    <img src={teamData.crest} alt="team-crest" />
-                  </td>
-                  {index + 1 === 1 ? (
-                    <td className="p-1 text-left font-bold text-green-400">{teamData.team}</td>
-                  ) : index + 1 === lastIndex3 - 2 || index + 1 === lastIndex3 - 1 || index + 1 === lastIndex3 ? (
-                    <td className="p-1 text-left font-semibold text-red-600">{teamData.team}</td>
-                  ) : teamData.team === 'West Ham United FC' ? (
-                    <td className="text-burgundy p-1 text-left text-xl font-extrabold">
-                      {teamData.team}
-                    </td>
-                  ) : (
-                    <td className="p-1 text-left">{teamData.team}</td>
-                  )}
-                  <td>{teamData.gp}</td>
-                  <td>{teamData.goalsScored}</td>
-                  <td>{teamData.goalsConceded}</td>
-                  <td>{teamData.goalsScored - teamData.goalsConceded}</td>
-                  <td>{teamData.points}</td>
-                  <td className="hidden p-1 text-center md:table-cell">
-                    <div className="flex">
-                      {_.takeRight(teamData.form, 5).map((f, i) =>
-                        f === 'w' ? (
-                          <div key={i} className="mx-0.5 mb-2 h-3 w-1 rounded bg-green-500"></div>
-                        ) : f === 'l' ? (
-                          <div key={i} className="mx-0.5 mt-2 h-3 w-1 rounded bg-red-500"></div>
-                        ) : (
-                          <div key={i} className="mx-0.5 mb-1 h-1 w-1 rounded bg-gray-400"></div>
-                        ),
-                      )}
-                    </div>
-                  </td>
+          <section className="overflow-x-auto">
+            <table className="table table-zebra">
+              <thead>
+                <tr>
+                  <th>Pos</th>
+                  <th>Crest</th>
+                  <th>Team</th>
+                  <th>GP</th>
+                  <th>GF</th>
+                  <th>GA</th>
+                  <th>GD</th>
+                  <th>Pts</th>
+                  <th>Form</th>
                 </tr>
-              )
-             //)
-                    }
-            )}
-            </tbody>
-          </table>
-          <p>The season you selected is: {selectedSeason}</p>
+              </thead>
+              <tbody>
+                {sortedStandings.map((teamData, index) => {
+                  //(
+                  // NOTE: to use curly braces i need to use function syntax instead of arrow function syntax:
+                  //{sortedStandings.map(function(teamData, index) {
+                  //...
+                  //})} OR
+                  //{sortedStandings.map((teamData, index) => {
+                  //return (....)
+                  //})}
+                  // const lastIndex2 = teamData.at(-1) !== undefined ? teamData.lastIndexOf(teamData.at(-1)) : -1;
+                  const lastIndex =
+                    (teamData.length > 0
+                      ? teamData.lastIndexOf(teamData[teamData.length - 1])
+                      : -1) + 1;
+                  // const lastIndex3 = sortedStandings.map((x, index) => index).reduce((a, b) => b, sortedStandings.length - 1);
+                  return (
+                    <tr className="hover" key={index}>
+                      <td>{index + 1}</td>
+                      <td className="w-1 rounded-full">
+                        <img src={teamData.crest} alt="team-crest" />
+                      </td>
+                      {index + 1 === 1 ? (
+                        <td className="p-1 text-left font-bold text-green-400">{teamData.team}</td>
+                      ) : index + 1 === lastIndex3 - 2 ||
+                        index + 1 === lastIndex3 - 1 ||
+                        index + 1 === lastIndex3 ? (
+                        <td className="p-1 text-left font-semibold text-red-600">
+                          {teamData.team}
+                        </td>
+                      ) : teamData.team === 'West Ham United FC' ? (
+                        <td className="text-burgundy p-1 text-left text-xl font-extrabold">
+                          {teamData.team}
+                        </td>
+                      ) : (
+                        <td className="p-1 text-left">{teamData.team}</td>
+                      )}
+                      <td>{teamData.gp}</td>
+                      <td>{teamData.goalsScored}</td>
+                      <td>{teamData.goalsConceded}</td>
+                      <td>{teamData.goalsScored - teamData.goalsConceded}</td>
+                      <td>{teamData.points}</td>
+                      <td className="hidden p-1 text-center md:table-cell">
+                        <div className="flex">
+                          {_.takeRight(teamData.form, 5).map((f, i) =>
+                            f === 'w' ? (
+                              <div
+                                key={i}
+                                className="mx-0.5 mb-2 h-3 w-1 rounded bg-green-500"
+                              ></div>
+                            ) : f === 'l' ? (
+                              <div key={i} className="mx-0.5 mt-2 h-3 w-1 rounded bg-red-500"></div>
+                            ) : (
+                              <div
+                                key={i}
+                                className="mx-0.5 mb-1 h-1 w-1 rounded bg-gray-400"
+                              ></div>
+                            ),
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                  //)
+                })}
+              </tbody>
+            </table>
+            <p>The season you selected is: {selectedSeason}</p>
+          </section>
+          <section className="overflow-x-auto">
+            <table className="table table-zebra">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th className="text-right">Home</th>
+                  <th></th>
+                  <th></th>
+                  <th>Away</th>
+                </tr>
+              </thead>
+              <tbody>
+                {matchResults.map((match, index) => (
+                  <tr key={index}>
+                    <td>{match.date}</td>
+                    <td>{match.time}</td>
+                    <td className="p1 text-right">{match.homeTeam}</td>
+                    <td>{match.homeScore}</td>
+                    <td>{match.awayScore}</td>
+                    <td>{match.awayTeam}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </section>
         </section>
-        <section className='overflow-x-auto'>
-          <table className="table table-zebra">
-            <thead>
-             <tr>
-              <th>Date</th>
-              <th>Time</th>
-              <th className='text-right'>Home</th>
-              <th></th>
-              <th></th>
-              <th>Away</th>
-             </tr>
-            </thead>
-            <tbody>
-             {matchResults.map((match, index) => (
-              <tr key={index}>
-                <td>{match.date}</td>
-                <td>{match.time}</td>
-                <td className='p1 text-right'>{match.homeTeam}</td>
-                <td>{match.homeScore}</td>
-                <td>{match.awayScore}</td>
-                <td>{match.awayTeam}</td>
-              </tr>
-            ))}
-            </tbody>
-          </table>
-        </section>
-      </section>
       )}
     </article>
   );
