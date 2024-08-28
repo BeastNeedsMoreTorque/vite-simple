@@ -14,6 +14,7 @@ import calcStandings2 from './helpers/calcStandings2';
 import calcStandings3 from './helpers/calcStandings3';
 import calcStandings4 from './helpers/calcStandings4';
 import { Loader } from './helpers/Loader';
+import Results from './api/components/Results';
 
 const apiKey = import.meta.env.VITE_FOOTBALL_API_KEY;
 
@@ -262,32 +263,7 @@ function App2() {
             </table>
             <p>The season you selected is: {selectedSeason}</p>
           </section>
-          <section className="overflow-x-auto">
-            <table className="table table-zebra">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Time</th>
-                  <th className="text-right">Home</th>
-                  <th></th>
-                  <th></th>
-                  <th>Away</th>
-                </tr>
-              </thead>
-              <tbody>
-                {matchResults.map((match, index) => (
-                  <tr key={index}>
-                    <td>{match.date}</td>
-                    <td>{match.time}</td>
-                    <td className="p1 text-right">{match.homeTeam}</td>
-                    <td>{match.homeScore}</td>
-                    <td>{match.awayScore}</td>
-                    <td>{match.awayTeam}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </section>
+          <Results matchResults={matchResults} />
         </section>
       )}
     </article>
