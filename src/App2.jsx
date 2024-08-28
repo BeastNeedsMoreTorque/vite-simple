@@ -14,6 +14,7 @@ import calcStandings from './helpers/calcStandings';
 import calcStandings2 from './helpers/calcStandings2';
 import calcStandings3 from './helpers/calcStandings3';
 import calcStandings4 from './helpers/calcStandings4';
+import calcStandings5 from './helpers/calcStandings5';
 import { Loader } from './helpers/Loader';
 
 const apiKey = import.meta.env.VITE_FOOTBALL_API_KEY;
@@ -112,13 +113,14 @@ function App2() {
         time: time,
         awayScore: m.score.fullTime.away,
         homeScore: m.score.fullTime.home,
+        // winner: m.score.winner
       };
       //)
     });
 
   console.log('awayTeam: ', matchResults);
 
-  const sortedStandings = calcStandings4(matchResults);
+  const sortedStandings = calcStandings5(matchResults);
   const lastIndex3 =
     sortedStandings.map((x, index) => index).reduce((a, b) => b, sortedStandings.length - 1) + 1;
   console.log('lastIndex3: ', lastIndex3);
@@ -187,6 +189,9 @@ function App2() {
                   <th>Crest</th>
                   <th>Team</th>
                   <th>GP</th>
+                  <th>W</th>
+                  <th>D</th>
+                  <th>L</th>
                   <th>GF</th>
                   <th>GA</th>
                   <th>GD</th>
@@ -232,6 +237,9 @@ function App2() {
                         <td className="p-1 text-left">{teamData.team}</td>
                       )}
                       <td>{teamData.gp}</td>
+                      <td>{teamData.wins}</td>
+                      <td>{teamData.draws}</td>
+                      <td>{teamData.losses}</td>
                       <td>{teamData.goalsScored}</td>
                       <td>{teamData.goalsConceded}</td>
                       <td>{teamData.goalsScored - teamData.goalsConceded}</td>
