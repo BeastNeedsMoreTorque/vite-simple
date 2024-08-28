@@ -6,9 +6,9 @@ import './App.css';
 
 import axios from 'axios';
 
-import Results from './api/components/Results';
+import Results from './components/Results';
 import pimps from './data/pimps_long.json';
-// import StandingsTable from './StandingsTable';
+// import StandingsTable from './components/StandingsTable';
 
 import calcStandings from './helpers/calcStandings';
 import calcStandings2 from './helpers/calcStandings2';
