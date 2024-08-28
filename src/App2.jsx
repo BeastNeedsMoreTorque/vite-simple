@@ -225,7 +225,7 @@ function App2() {
                           {teamData.team}
                         </td>
                       ) : teamData.team === 'West Ham United FC' ? (
-                        <td className="text-burgundy p-1 text-left text-xl font-extrabold">
+                        <td className="text-fuchsia-800 p-1 text-left text-xl font-extrabold">
                           {teamData.team}
                         </td>
                       ) : (

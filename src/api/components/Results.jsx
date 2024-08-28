@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 const Results = (props) => {
   return (
     <section className="overflow-x-auto">
-      <h1>Results</h1>
-      <table className="table table-zebra">
+      <h1 className="font-bold m-3 p-3 text-center">Results</h1>
+      <table className="font-medium m-3 p-3 table table-zebra">
         <thead>
           <tr>
             <th>Date</th>
@@ -21,10 +21,22 @@ const Results = (props) => {
             <tr key={index}>
               <td>{match.date}</td>
               <td>{match.time}</td>
-              <td className="p1 text-right">{match.homeTeam}</td>
+              {match.homeTeam === 'West Ham United FC' ? (
+                <td className="text-fuchsia-800 text-right text-xl font-extrabold">
+                  {match.homeTeam}
+                </td>
+              ) : (
+                <td className="p1 text-right">{match.homeTeam}</td>
+              )}
               <td>{match.homeScore}</td>
               <td>{match.awayScore}</td>
-              <td>{match.awayTeam}</td>
+              {match.awayTeam === 'West Ham United FC' ? (
+                <td className="text-fuchsia-800 text-right text-xl font-extrabold">
+                  {match.awayTeam}
+                </td>
+              ) : (
+                <td className="p1 text-right">{match.awayTeam}</td>
+              )}
             </tr>
           ))}
         </tbody>
