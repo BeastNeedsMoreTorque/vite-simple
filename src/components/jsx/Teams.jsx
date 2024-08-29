@@ -9,7 +9,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { getTeam } from '../api/config';
+import { getTeam } from '../../api/config';
 
 function Teams(props) {
   const [teamMatches, setTeamMatches] = useState([]);
