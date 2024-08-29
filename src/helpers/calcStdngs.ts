@@ -21,7 +21,7 @@ interface TeamStanding {
   goalDifference?: number;
 }
 
-const calcStandings5 = (matchResults: MatchResult[]): TeamStanding[] => {
+const calcStdngs = (matchResults: MatchResult[]): TeamStanding[] => {
   const standings: Record<string, TeamStanding> = Object.create(null);
 
   const updateTeamStandings = (team: string, score: number, opponentScore: number, crest: string, result: 'w' | 'd' | 'l'): void => {
@@ -53,7 +53,7 @@ const calcStandings5 = (matchResults: MatchResult[]): TeamStanding[] => {
     .sort((a, b) => b.points - a.points || b.goalDifference! - a.goalDifference!);
 };
 
-export default calcStandings5;
+export default calcStdngs;
 
 // Previous code (commented out):
 /*
