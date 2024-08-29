@@ -12,6 +12,8 @@ import pimps from './data/pimps_long.json';
 
 import calcStandings5 from './helpers/calcStandings5';
 import { Loader } from './helpers/Loader';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
 const apiKey = import.meta.env.VITE_FOOTBALL_API_KEY;
 
@@ -100,6 +102,7 @@ function App2() {
 
   return (
     <article className="App2">
+      <Navbar />
       <section>
         <label className="label w-1/3 text-xl">
           Season:
@@ -214,6 +217,7 @@ function App2() {
           <Results matchResults={matchResults} />
         </section>
       )}
+      <Footer />
     </article>
   );
 }
