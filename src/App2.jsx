@@ -6,7 +6,8 @@ import './App.css';
 
 import axios from 'axios';
 
-import Results from './components/Results';
+// import Results from './components/Results';
+import Results from './components/Results.tsx';
 import pimps from './data/pimps_long.json';
 // import StandingsTable from './components/StandingsTable';
 
@@ -218,7 +219,7 @@ function App2() {
             <p>The season you selected is: {selectedSeason}</p>
           </section>
           <Results matchResults={matchResults} />
-          <Teams />
+          {/* <Teams /> */}
         </section>
       )}
       <Footer />
