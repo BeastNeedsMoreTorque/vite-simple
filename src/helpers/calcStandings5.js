@@ -1,3 +1,39 @@
+const calcStandings5 = (matchResults) => {
+  const standings = Object.create(null);
+
+  const updateTeamStandings = (team, score, opponentScore, crest, result) => {
+    if (!standings[team]) {
+      standings[team] = { team, crest, gp: 0, goalsScored: 0, goalsConceded: 0, points: 0, form: '', wins: 0, draws: 0, losses: 0 };
+    }
+    const s = standings[team];
+    s.gp++;
+    s.goalsScored += score;
+    s.goalsConceded += opponentScore;
+    s.points += result === 'w' ? 3 : result === 'd' ? 1 : 0;
+    s.form = s.form.slice(-4) + result;
+    s[result === 'w' ? 'wins' : result === 'd' ? 'draws' : 'losses']++;
+  };
+
+  matchResults.forEach(({ homeTeam, awayTeam, homeScore, awayScore, homeCrest, awayCrest }) => {
+    const homeResult = homeScore > awayScore ? 'w' : homeScore < awayScore ? 'l' : 'd';
+    const awayResult = homeResult === 'w' ? 'l' : homeResult === 'l' ? 'w' : 'd';
+
+    updateTeamStandings(homeTeam, homeScore, awayScore, homeCrest, homeResult);
+    updateTeamStandings(awayTeam, awayScore, homeScore, awayCrest, awayResult);
+  });
+
+  return Object.values(standings)
+    .map(team => {
+      team.goalDifference = team.goalsScored - team.goalsConceded;
+      return team;
+    })
+    .sort((a, b) => b.points - a.points || b.goalDifference - a.goalDifference);
+};
+
+export default calcStandings5;
+
+// Previous code (commented out):
+/*
 import _ from 'lodash';
 
 const calcStandings5 = (matchResults) => {
@@ -61,5 +97,4 @@ const calcStandings5 = (matchResults) => {
 
   return sortedStandings;
 };
-
-export default calcStandings5;
+*/

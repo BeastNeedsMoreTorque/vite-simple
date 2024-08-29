@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 
 import './App.css';
@@ -10,6 +10,10 @@ import Results from './components/Results';
 import pimps from './data/pimps_long.json';
 // import StandingsTable from './components/StandingsTable';
 
+import calcStandings from './helpers/calcStandings';
+import calcStandings2 from './helpers/calcStandings2';
+import calcStandings3 from './helpers/calcStandings3';
+import calcStandings4 from './helpers/calcStandings4';
 import calcStandings5 from './helpers/calcStandings5';
 import { Loader } from './helpers/Loader';
 
@@ -19,6 +23,7 @@ const options = {
   method: 'GET',
   headers: {
     'X-Auth-Token': apiKey,
+    //'Accept-Encoding': '',
   },
 };
 const BASE_URL = 'https://api.football-data.org/v4/';
@@ -41,35 +46,38 @@ function App2() {
   const [selectedSeason, setSelectedSeason] = useState('2022');
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchMatches = useCallback(async () => {
+  useEffect(() => {
     setIsLoading(true);
-    try {
-      const response = await axios.get(
-        `${BASE_URL}competitions/${selectedLeague}/matches?season=${selectedSeason}`,
-        options,
-      );
-      const results = response.data.matches.filter(
-        (p) => !pimps.includes(p.homeTeam.name) && !pimps.includes(p.awayTeam.name),
-      );
-      setMatches(results);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
+    // Fetch matches from the API
+    const fetchMatches = async () => {
+      try {
+        const response = await axios.get(
+          `${BASE_URL}competitions/${selectedLeague}/matches?season=${selectedSeason}`,
+          options,
+        );
+        const results = response.data.matches.filter(
+          (p) => !pimps.includes(p.homeTeam.name) && !pimps.includes(p.awayTeam.name),
+        );
+        setMatches(results);
+        setIsLoading(false);
+      } catch (error) {
+        console.error(error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchMatches();
   }, [selectedLeague, selectedSeason]);
 
-  useEffect(() => {
-    fetchMatches();
-  }, [fetchMatches]);
-
-  const handleSelectedLeague = useCallback((event) => {
+  const handleSelectedLeague = (event) => {
     setSelectedLeague(event.target.value);
-  }, []);
+  };
 
-  const gameStatus = useCallback((x) => x === 'FINISHED', []);
+  // Optimized gameStatus function
+  const gameStatus = (x) => x === 'FINISHED';
 
-  const changeDate = useCallback((d) => {
+  // Optimized changeDate function
+  const changeDate = (d) => {
     const utcDate = new Date(d);
     const gmtDate = utcDate.toLocaleString('en-GB', { timeZone: 'GMT' });
     const [dataDay, timeWithSeconds] = gmtDate.split(',');
@@ -77,9 +85,10 @@ function App2() {
       dataDay: dataDay.split('/').join('-'), 
       time: timeWithSeconds.trim().slice(0, -3) 
     };
-  }, []);
+  };
 
-  const matchResults = useMemo(() => matches
+  // Optimized matchResults calculation
+  const matchResults = matches
     .filter((r) => gameStatus(r.status))
     .map((m) => {
       const { dataDay, time } = changeDate(m.utcDate);
@@ -93,11 +102,12 @@ function App2() {
         awayScore: m.score.fullTime.away,
         homeScore: m.score.fullTime.home,
       };
-    }), [matches, gameStatus, changeDate]);
+    });
 
-  const sortedStandings = useMemo(() => calcStandings5(matchResults), [matchResults]);
+  const sortedStandings = calcStandings5(matchResults);
   const lastIndex3 = sortedStandings.length;
 
+  // Render standings using React.js
   return (
     <article className="App2">
       <section>
@@ -107,7 +117,7 @@ function App2() {
             className="select select-lg w-1/2 max-w-xs"
             name="selectedSeason"
             value={selectedSeason}
-            onChange={useCallback((e) => setSelectedSeason(e.target.value), [])}
+            onChange={(e) => setSelectedSeason(e.target.value)}
           >
             {[2020, 2021, 2022, 2023, 2024].map((year) => (
               <option key={year} value={year.toString()}>{year}</option>
