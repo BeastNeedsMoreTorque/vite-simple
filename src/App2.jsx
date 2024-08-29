@@ -11,9 +11,11 @@ import pimps from './data/pimps_long.json';
 // import StandingsTable from './components/StandingsTable';
 
 import calcStandings5 from './helpers/calcStandings5';
+import calcStdngs from './helpers/calcStdngs';
 import { Loader } from './helpers/Loader';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import Teams from './components/Teams';
 
 const apiKey = import.meta.env.VITE_FOOTBALL_API_KEY;
 
@@ -97,7 +99,8 @@ function App2() {
       };
     }), [matches, gameStatus, changeDate]);
 
-  const sortedStandings = useMemo(() => calcStandings5(matchResults), [matchResults]);
+  // const sortedStandings = useMemo(() => calcStandings5(matchResults), [matchResults]);
+  const sortedStandings = useMemo(() => calcStdngs(matchResults), [matchResults]);
   const lastIndex3 = sortedStandings.length;
 
   return (
@@ -215,6 +218,7 @@ function App2() {
             <p>The season you selected is: {selectedSeason}</p>
           </section>
           <Results matchResults={matchResults} />
+          <Teams />
         </section>
       )}
       <Footer />

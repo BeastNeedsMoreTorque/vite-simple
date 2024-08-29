@@ -11,9 +11,16 @@ const options = {
 
 const BASE_URL = 'https://api.football-data.org/v4/';
 
-export const getMatches = (season, league) => {
+export const getMatches = (selectedLeague, selectedSeason) => {
     return axios.get(
-        `${BASE_URL}competitions/${season}/matches?=season=${league}`, 
+        `${BASE_URL}competitions/${selectedLeague}/matches?season=${selectedSeason}`,
+        options
+    );
+}
+
+export const getTeam = (team, year) => {
+    return axios.get(
+        `${BASE_URL}teams/${team}/matches?season=${year}`,
         options
     );
 }
