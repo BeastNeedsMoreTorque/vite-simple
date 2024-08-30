@@ -120,4 +120,32 @@ const calcStandings5 = (matchResults) => {
 
   return sortedStandings;
 };
+
+--more notes:
+Certainly! I'll analyze the current implementation of `calcStdngs` function:
+
+1. Type Safety: The code uses TypeScript interfaces (`MatchResult` and `TeamStanding`) to define the structure of input and output data, improving type safety and readability.
+
+2. Efficiency: The function uses a single pass through the match results to calculate standings, which is efficient for large datasets.
+
+3. Data Structure: It uses an object (`standings`) to store team data, allowing for quick updates and lookups.
+
+4. Helper Function: The `updateTeamStandings` function encapsulates the logic for updating a team's statistics, promoting code reusability and readability.
+
+5. Form Tracking: The code tracks the last 5 matches' form using a string, which is a compact representation.
+
+6. Sorting: The final sorting considers both points and goal difference, which is a common approach in sports standings.
+
+7. Immutability: The function doesn't modify the input data, instead creating a new standings object.
+
+8. Null Object Pattern: `Object.create(null)` is used to create a "clean" object without inherited properties.
+
+Compared to the previous implementation (commented out):
+
+- The new version is more concise and easier to read.
+- It doesn't rely on lodash, reducing dependencies.
+- It's fully typed, which wasn't the case in the previous version.
+- The logic for updating team standings is centralized in a helper function, whereas the old version repeated this logic for home and away teams.
+
+Overall, the current implementation is well-structured, efficient, and type-safe. It's a significant improvement over the previous version in terms of readability and maintainability.
 */
