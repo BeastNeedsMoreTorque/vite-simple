@@ -80,8 +80,8 @@ const sortStandings = (standings: Record<string, PartialStanding>): Standings =>
   return Object.keys(standings)
     .map(team => ({ team, ...standings[team] }))
     .sort((a, b) =>
-      b.points - a.points ||
-      (b.goalsScored - b.goalsConceded) - (a.goalsScored - a.goalsConceded)
+      (b.points ?? 0) - (a.points ?? 0) ||
+      ((b.goalsScored ?? 0) - (b.goalsConceded ?? 0)) - ((a.goalsScored ?? 0) - (a.goalsConceded ?? 0))
     );
 };
 
