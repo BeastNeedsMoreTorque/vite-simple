@@ -53,57 +53,63 @@ type PartialStanding = Partial<Standing>;
 
 const POINTS = [0, 1, 3] as const;
 
+const updateTeamStanding = (
+  standings: Record<string, PartialStanding>,
+  team: string,
+  crest: string,
+  goalsScored: number,
+  goalsConceded: number
+): void => {
+  standings[team] = {
+    ...standings[team],
+    crest,
+    gp: (standings[team]?.gp ?? 0) + 1,
+    goalsScored: (standings[team]?.goalsScored ?? 0) + goalsScored,
+    goalsConceded: (standings[team]?.goalsConceded ?? 0) + goalsConceded,
+    points: (standings[team]?.points ?? 0) + calculatePoints(goalsScored, goalsConceded),
+  };
+};
+
+const calculatePoints = (teamScore: number, opponentScore: number): number => {
+  if (teamScore > opponentScore) return POINTS[2];
+  if (teamScore === opponentScore) return POINTS[1];
+  return POINTS[0];
+};
+
+const sortStandings = (standings: Record<string, PartialStanding>): Standings => {
+  return Object.keys(standings)
+    .map(team => ({ team, ...standings[team] }))
+    .sort((a, b) =>
+      b.points - a.points ||
+      (b.goalsScored - b.goalsConceded) - (a.goalsScored - a.goalsConceded)
+    );
+};
+
 const calcStandings5 = (matchResults: MatchResult[]): Standings => {
-//   const standings: Standings = {};
   const standings: Record<string, PartialStanding> = {};
 
   matchResults.forEach(match => {
-    const { homeTeam, awayTeam, homeScore, awayScore, homeCrest, awayCrest } =
-      match;
-
-    standings[homeTeam] = {
-      ...standings[homeTeam],
-      crest: homeCrest,
-      gp: (standings[homeTeam]?.gp ?? 0) + 1,
-      goalsScored: (standings[homeTeam]?.goalsScored ?? 0) + homeScore,
-      goalsConceded: (standings[homeTeam]?.goalsConceded ?? 0) + awayScore,
-      points:
-        (standings[homeTeam]?.points ?? 0) +
-        POINTS[homeScore > awayScore ? 2 : homeScore === awayScore ? 1 : 0],
-    };
-
-    standings[awayTeam] = {
-      ...standings[awayTeam],
-      crest: awayCrest,
-      gp: (standings[awayTeam]?.gp ?? 0) + 1,
-      goalsScored: (standings[awayTeam]?.goalsScored ?? 0) + awayScore,
-      goalsConceded: (standings[awayTeam]?.goalsConceded ?? 0) + homeScore,
-      points:
-        (standings[awayTeam]?.points ?? 0) +
-        POINTS[awayScore > homeScore ? 2 : awayScore === homeScore ? 1 : 0],
-    };
+    const { homeTeam, awayTeam, homeScore, awayScore, homeCrest, awayCrest } = match;
+    updateTeamStanding(standings, homeTeam, homeCrest, homeScore, awayScore);
+    updateTeamStanding(standings, awayTeam, awayCrest, awayScore, homeScore);
   });
 
-  const sortedStandings = Object.keys(standings)
-    .map(team => ({ team, ...standings[team] }))
-    .sort(
-      (a, b) =>
-        b.points - a.points ||
-        (b.goalsScored - b.goalsConceded) - (a.goalsScored - a.goalsConceded)
-    );
-
-  
-    return sortedStandings;
-
-//   const sortedStandings = Object.fromEntries(
-//     Object.entries(standings).sort(
-//       ([teamA, standingA], [teamB, standingB]) =>
-//         standingB.points - standingA.points ||
-//         (standingB.goalsScored - standingB.goalsConceded) -
-//           (standingA.goalsScored - standingA.goalsConceded)
-//     )
-//   ) as Standings;
-
+  return sortStandings(standings);
 };
 
 export default calcStandings5;
+
+/**
+ * This breakdown offers several benefits:
+updateTeamStanding: Encapsulates the logic for updating a single team's standing.
+calculatePoints: Simplifies the point calculation logic.
+3. sortStandings: Separates the sorting logic from the main function.
+These changes make the code more modular and easier to understand. Each function has a single responsibility, 
+which adheres to the Single Responsibility Principle.
+While this approach may not significantly improve performance (and could potentially have a slight overhead 
+due to additional function calls), it offers better maintainability and testability. You can now unit test 
+each function separately, making it easier to catch and fix bugs.
+If performance is a critical concern, you might want to profile the original and refactored versions to 
+ensure there's no significant performance degradation. In most cases, the improved readability and 
+maintainability would outweigh any minor performance differences.
+ */
