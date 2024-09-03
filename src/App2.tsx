@@ -13,7 +13,7 @@ import pimps from './data/pimps_long.json';
 import calcStdngs from './helpers/calcStdngs';
 import { Loader } from './helpers/Loader';
 
-const apiKey = import.meta.env.VITE_FOOTBALL_API_KEY;
+const apiKey = import.meta.env.VITE_FOOTBALL_API_KEY as string;
 
 const options = {
   method: 'GET',
