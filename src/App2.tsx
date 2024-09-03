@@ -24,20 +24,9 @@ const options = {
 const BASE_URL = 'https://api.football-data.org/v4/';
 
 interface League {
-  [key: string]: string;
+  name: string;
+  id: string;
 }
-
-const Leagues: League[] = [
-  { Bundesliga: '2002' },
-  { EPL: '2021' },
-  { Championship: '2016' },
-  { 'League 1 (France)': '2015' },
-  { 'Serie A': '2019' },
-  { Holland: '2003' },
-  { Portugal: '2017' },
-  { Spain: '2014' },
-  { Brazil: '2013' },
-];
 
 interface Match {
   status: string;
@@ -77,6 +66,21 @@ function App2(): JSX.Element {
   const [selectedSeason, setSelectedSeason] = useState<string>('2022');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const Leagues: League[] = useMemo(
+    () => [
+      { name: 'Bundesliga', id: '2002' },
+      { name: 'EPL', id: '2021' },
+      { name: 'Championship', id: '2016' },
+      { name: 'League 1 (France)', id: '2015' },
+      { name: 'Serie A', id: '2019' },
+      { name: 'Holland', id: '2003' },
+      { name: 'Portugal', id: '2017' },
+      { name: 'Spain', id: '2014' },
+      { name: 'Brazil', id: '2013' },
+    ],
+    [],
+  );
+
   const fetchMatches = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -101,6 +105,10 @@ function App2(): JSX.Element {
 
   const handleSelectedLeague = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedLeague(event.target.value);
+  }, []);
+
+  const handleSelectedSeason = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSeason(e.target.value);
   }, []);
 
   const gameStatus = useCallback((x: string) => x === 'FINISHED', []);
@@ -138,6 +146,10 @@ function App2(): JSX.Element {
   const sortedStandings = useMemo(() => calcStdngs(matchResults), [matchResults]);
   const lastIndex3 = sortedStandings.length;
 
+  const seasonYears = useMemo(() => [2020, 2021, 2022, 2023, 2024], []);
+
+  const MemoizedResults = React.memo(Results);
+
   return (
     <article className="App2">
       <Navbar />
@@ -149,9 +161,9 @@ function App2(): JSX.Element {
             className="select select-lg w-1/2 max-w-xs"
             name="selectedSeason"
             value={selectedSeason}
-            onChange={useCallback((e) => setSelectedSeason(e.target.value), [])}
+            onChange={handleSelectedSeason}
           >
-            {[2020, 2021, 2022, 2023, 2024].map((year) => (
+            {seasonYears.map((year) => (
               <option key={year} value={year.toString()}>
                 {year}
               </option>
@@ -169,14 +181,11 @@ function App2(): JSX.Element {
             onChange={handleSelectedLeague}
           >
             <option value="">Select a League</option>
-            {Leagues.map((option, index) => {
-              const [label, value] = Object.entries(option)[0];
-              return (
-                <option key={index} value={value}>
-                  {label}
-                </option>
-              );
-            })}
+            {Leagues.map((league) => (
+              <option key={league.id} value={league.id}>
+                {league.name}
+              </option>
+            ))}
           </select>
         </label>
       </section>
@@ -223,10 +232,10 @@ function App2(): JSX.Element {
                           isChampion
                             ? 'font-bold text-green-400'
                             : isRelegation
-                              ? 'font-semibold text-red-600'
-                              : isWestHam
-                                ? 'text-fuchsia-800 text-xl font-extrabold'
-                                : ''
+                            ? 'font-semibold text-red-600'
+                            : isWestHam
+                            ? 'text-fuchsia-800 text-xl font-extrabold'
+                            : ''
                         }`}
                       >
                         {teamData.team}
@@ -248,8 +257,8 @@ function App2(): JSX.Element {
                                 f === 'w'
                                   ? 'mb-2 bg-green-500'
                                   : f === 'l'
-                                    ? 'mt-2 bg-red-500'
-                                    : 'mb-1 h-1 bg-gray-400'
+                                  ? 'mt-2 bg-red-500'
+                                  : 'mb-1 h-1 bg-gray-400'
                               }`}
                             ></div>
                           ))}
@@ -262,7 +271,7 @@ function App2(): JSX.Element {
             </table>
             <p>The season you selected is: {selectedSeason}</p>
           </section>
-          <Results matchResults={matchResults} />
+          <MemoizedResults matchResults={matchResults} />
         </section>
       )}
       <Footer />
@@ -270,7 +279,7 @@ function App2(): JSX.Element {
   );
 }
 
-export default App2;
+export default React.memo(App2);
 
 /**
  * Here are the main changes made to convert the code to TypeScript:
