@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+
 import { getTeam } from '../api/config';
 
 interface Match {
@@ -42,31 +43,52 @@ const Teams: React.FC = () => {
 
   return (
     <section>
-        <h4>This is TSX</h4>
+      <h4>This is TSX</h4>
+      {teamMatches.length > 0 && (
+        <p>
+          <img className="w-5 rounded-full" src={teamMatches[0].awayTeam.crest} alt="team-crest" />
+        </p>
+      )}
       <table className="table table-zebra">
         <thead>
           <tr>
             <th></th>
             <th></th>
-            <th>Home</th>
-            <th></th>
-            <th></th>
+            <th>Team</th>
+            <th>hs</th>
+            <th>as</th>
             <th></th>
             <th>Away</th>
           </tr>
         </thead>
         <tbody>
-          {teamMatches.map((m, index) => (
-            <tr key={index}>
-              <td>{index + 1}</td>
-              <td><img className='w-5 rounded-full' src={m.homeTeam.crest} alt="team-crest" /></td>
-              <td className='text-right'>{m.homeTeam.name}</td>
-              <td>{m.score.fullTime.home}</td>
-              <td>{m.score.fullTime.away}</td>
-              <td ><img className='w-5 rounded-full' src={m.awayTeam.crest} alt="team-crest" /></td>
-              <td className='text-left'>{m.awayTeam.name}</td>
-            </tr>
-          ))}
+          {teamMatches.map((m, index) => {
+            const isWestHam = m.homeTeam.name === 'West Ham United FC';
+            // const isWestHam2 = (team: string): boolean => team === 'West Ham United FC';
+            return (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                {isWestHam ? (
+                  <>
+                    <td>
+                      <img className="w-5 rounded-full" src={m.awayTeam.crest} alt="team-crest" />
+                    </td>
+                    <td className="text-left">{m.awayTeam.name}</td>
+                  </>
+                ) : (
+                  <>
+                    <td>
+                      <img className="w-5 rounded-full" src={m.homeTeam.crest} alt="team-crest" />
+                    </td>
+                    <td className="text-left">{m.homeTeam.name}</td>
+                  </>
+                )}
+                <td>{m.score.fullTime.home}</td>
+                <td>{m.score.fullTime.away}</td>
+                {isWestHam ? <td>Home</td> : <td>Away</td>}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </section>
