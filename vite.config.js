@@ -5,7 +5,11 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   server: {
     proxy: {
-      'api': 'https://api.football-data.org/v4/'
+      '/api': {
+        target: 'https://api.football-data.org/v4/',
+        changeOrigin: true,
+      },
+      // cors: true
     }
   },
   plugins: [react()],

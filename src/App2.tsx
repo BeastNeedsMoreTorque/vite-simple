@@ -19,6 +19,8 @@ const options = {
   method: 'GET',
   headers: {
     'X-Auth-Token': apiKey,
+    // 'Access-Control-Allow-Origin': '*',
+    // "Access-Control-Allow-Methods": "GET",
   },
 };
 const BASE_URL = 'https://api.football-data.org/v4/';
