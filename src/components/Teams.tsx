@@ -46,7 +46,8 @@ const Teams: React.FC = () => {
       <h4>This is TSX</h4>
       {teamMatches.length > 0 && (
         <p>
-          <img className="w-5 rounded-full" src={teamMatches[0].awayTeam.crest} alt="team-crest" />
+          <img className="w-12 rounded-full" src={teamMatches[19].awayTeam.crest} alt="team-crest" />
+          <span>{teamMatches[19].awayTeam.name}</span>
         </p>
       )}
       <table className="table table-zebra">

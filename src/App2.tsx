@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import _ from 'lodash';
+import { Link, Outlet, Route, Routes } from 'react-router-dom';
 
 import './App.css';
 
@@ -154,6 +155,9 @@ function App2(): JSX.Element {
 
   return (
     <article className="App2">
+      <Routes>
+        {/* <Route path="navbar" element={<Navbar />} /> */}
+      </Routes>
       <Navbar />
       <h1>This is TSX</h1>
       <section>
@@ -234,10 +238,10 @@ function App2(): JSX.Element {
                           isChampion
                             ? 'font-bold text-green-400'
                             : isRelegation
-                            ? 'font-semibold text-red-600'
-                            : isWestHam
-                            ? 'text-fuchsia-800 text-xl font-extrabold'
-                            : ''
+                              ? 'font-semibold text-red-600'
+                              : isWestHam
+                                ? 'text-fuchsia-800 text-xl font-extrabold'
+                                : ''
                         }`}
                       >
                         {teamData.team}
@@ -259,8 +263,8 @@ function App2(): JSX.Element {
                                 f === 'w'
                                   ? 'mb-2 bg-green-500'
                                   : f === 'l'
-                                  ? 'mt-2 bg-red-500'
-                                  : 'mb-1 h-1 bg-gray-400'
+                                    ? 'mt-2 bg-red-500'
+                                    : 'mb-1 h-1 bg-gray-400'
                               }`}
                             ></div>
                           ))}
